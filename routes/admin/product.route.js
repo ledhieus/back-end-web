@@ -4,7 +4,7 @@ const multer = require("multer");
 const upload = multer();
 
 const controller = require("../../controllers/admin/product.controller")
-const validate = require("../../validates/admin/productvalidate");
+const validate = require("../../validates/admin/product.validate");
 
 const uploadCloud = require("../../middlewares/admin/uploadCloud.middlewares");
 
