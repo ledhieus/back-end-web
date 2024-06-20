@@ -233,7 +233,7 @@ module.exports.editPatch = async (req, res) => {
     res.redirect(`back`)
 }
 
-//[GET] /admin/products/edit/:id
+//[GET] /admin/products/detail
 module.exports.detail = async (req, res) => {
     try {
         const find = {

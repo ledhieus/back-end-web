@@ -90,3 +90,24 @@ module.exports.permissionsPatch = async (req, res) => {
    req.flash("success", "Cập nhật phân quyền thành công")
     res.redirect("back")
  }
+
+ //[GET] /admin/Role/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        };
+    
+        const product = await Role.findOne(find);
+
+        res.render("admin/pages/roles/detail", {
+            pageTitle: product.title,
+            product: product
+        });
+    } catch (error) {      
+        res.redirect(`${systemConfig.prefixAdmin}/role`)
+        
+    }
+    
+}
