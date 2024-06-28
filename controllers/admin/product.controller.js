@@ -1,5 +1,7 @@
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/product-category.model")
+const Account = require("../../models/account.model")
+
 
 const systemConfig = require("../../config/system")
 
@@ -58,6 +60,15 @@ module.exports.index = async (req, res) => {
     .skip(objectPagination.skip);
     // console.log(products)
 
+    for (const product of products){
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id
+        })
+        if(user){
+            product.accountFullName = user.fullName
+        }
+    }
+
     res.render("admin/pages/products/index", {
         pageTitle: "Trang sản phẩm",
         products: products,
@@ -99,7 +110,10 @@ module.exports.changeMulti = async (req, res) => {
                 { _id: { $in: ids } },
                 {
                     deleted: true,
-                    deleteAt: new Date(),
+                    deletedBy:{
+                        account_id: res.locals.user.id,
+                        deletedAt: new Date()
+                    }
                 }
             );
             req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm!`)
@@ -126,7 +140,10 @@ module.exports.deleteItems = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({ _id: id }, {
         deleted: true,
-        deleteAt: new Date()
+        deletedBy:{
+            account_id: res.locals.user.id,
+            deletedAt: new Date()
+        }
     });
     req.flash("success", `Đã xóa thành công!`)
 
@@ -168,9 +185,10 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     }
     
-    // if(req.file){
-    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
-    // }
+    req.body.createdBy = {
+        account_id: res.locals.user.id
+    }
+
    
     //req.body: lấy ra data
 
