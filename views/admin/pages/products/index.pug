@@ -54,7 +54,8 @@ block main
                             th Giá
                             th Vị trí
                             th Trạng thái 
-                            th Người Tạo
+                            th Người tạo
+                            th Người cập nhật
                             th Hành động
                     tbody
                         each item, index in products
@@ -116,6 +117,12 @@ block main
                                     p #{item.accountFullName}
                                     p 
                                         +formatDate(item.createdBy.createAt)
+                                td 
+                                    - const updatedBy = item.updatedBy.slice(-1)[0]
+                                    if(updatedBy)
+                                        p #{updatedBy.accountFullName}
+                                        p 
+                                            +formatDate(updatedBy.updatedAt)
 
                                 td 
                                     a(
