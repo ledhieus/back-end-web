@@ -55,3 +55,16 @@ if(listBtnAcceptFriend.length > 0){
     })
 }
 // Hết chức năng Chấp nhận kết bạn
+
+//SERVER_RETURN_LENGTH_ACCEPT_FRIEND
+const badgUsersAccept = document.querySelector("[bage-users-accept]")
+if(badgUsersAccept) {
+    const userId = badgUsersAccept.getAttribute("bage-users-accept")
+    socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
+        if(userId === data.userId){
+            badgUsersAccept.innerHTML = data.lengthAcceptFriends
+        }
+    })
+}
+
+//end SERVER_RETURN_LENGTH_ACCEPT_FRIEND
